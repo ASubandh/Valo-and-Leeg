@@ -6,7 +6,7 @@ import urllib.request
 import time
 import random
 from bs4 import BeautifulSoup
-from flask import Flask
+
 client = commands.Bot(command_prefix="!")
 
 
@@ -109,10 +109,23 @@ async def on_message(message):
     await client.process_commands(message)
 
 @client.command()
-async def excuse(ctx):
-    excuses = ["gotta go eat dinner", "Have to do HW", "need to grind physics", "I got an essay to finish up", "need to use the bathroom first", "im too tired",
-    "Nah gonna grind Osu","Persona Break","I don't feel like it","i have a dentist appointment","I have to wash the dishes","I’m gonna sleep","Adi is using my computer","my wifi isn’t working"]
-    await ctx.send(f'{excuses[random.randint(0, 13)]}')
+async def lolhours(ctx):
+    username = ctx.message.content[10:]
+    url = 'https://wol.gg/stats/na/' + username + '/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text,'lxml')
+    leeghrs = soup.find('div',{"id": "time-hours"}, class_= "time center" )
+    leeghrs = leeghrs.text
+    #print(leeghrs.text)
+    leeghrs = leeghrs.replace("hours","")
+
+    await ctx.send(f'{username} has played for {leeghrs} hours!')
+
+#@client.command()
+#async def excuse(ctx):
+    #excuses = ["gotta go eat dinner", "Have to do HW", "need to grind physics", "I got an essay to finish up", "need to use the bathroom first", "im too tired",
+    #"Nah gonna grind Osu","Persona Break","I don't feel like it","i have a dentist appointment","I have to wash the dishes","I’m gonna sleep","Adi is using my computer","my wifi isn’t working"]
+    #await ctx.send(f'{excuses[random.randint(0, 13)]}')
     #if str(ctx.message.author) == "finalmouse#7422":
         #await ctx.send("Shut up Bitcherd ehehehehehe")
 
@@ -121,17 +134,20 @@ async def veggietales(ctx):
     await ctx.send(f'If you like to talk to tomatoes,\nIf a squash can make you smile,\nIf you like to waltz with potatoes\nUp and down the produce aisle',tts=True)
     await ctx.send(f'Have we got a show for you!\nVeggieTales!\nBroccoli\nCelery\nGotta be\nVeggieTales!',tts = True)
 
-
 @client.command()
-async def helpme(ctx):
-    line_2 = "!excuse: Generates an excuse for why you cant do something. Very Convenient!\n!sealandy: Displays the ranked stats of the infamous Sealandy. Will stop working if he actually plays another champ."
-    await ctx.send(f"`Leegbot version 1.0 Commands:\n!stats <username>: Dislplays Ranked statistics of a summoner, including their top 3 played champions\n!veggietales: For people who like to talk to tomatoes\n{line_2}`")
+async def sussy(ctx):
+    await ctx.send("https://tenor.com/view/imposter-sussy-sus-kronik-gif-21535924")
+
+#@client.command()
+#async def helpme(ctx):
+    #line_2 = "!excuse: Generates an excuse for why you cant do something. Very Convenient!\n!sealandy: Displays the ranked stats of the infamous Sealandy. Will stop working if he actually plays another champ."
+    #await ctx.send(f"`Leegbot version 1.0 Commands:\n!stats <username>: Dislplays Ranked statistics of a summoner, including their top 3 played champions\n!veggietales: For people who like to talk to tomatoes\n{line_2}`")
 
 
-@client.command()
-async def chard(ctx):
-    randompic = str(random.randint(1,14))
-    await ctx.send(file=File("C:\Python27\Richz\Richz SS" + randompic + ".png"))
+#@client.command()
+#async def chard(ctx):
+    #randompic = str(random.randint(1,14))
+    #await ctx.send(file=File("C:\Python27\Richz\Richz SS" + randompic + ".png"))
 
 
 #Valorant
@@ -141,7 +157,7 @@ async def valhours(ctx):
     k = 0
     totalList = []
     for i in range(2):
-        modeListOne = ['/agents?playlist=competitive','/agents?playlist=unrated']
+        modeListOne = ['/agents?season=all','/agents?playlist=unrated&season=all']
         modeListTwo = ['competitive','unrated']
         username = ctx.message.content[10:]
         if "#" in username:
@@ -229,26 +245,16 @@ async def valhours(ctx):
         #await ctx.send(f'{totalList[j]}')
         #await ctx.send(f'{username} has played a total of {total_vf} hours in competitive!')
 
-        #await ctx.send(f'{username} has played a total of {total_vf} hours in {modeListTwo[j]}!')  
+        #await ctx.send(f'{username} has played a total of {total_vf} hours in {modeListTwo[j]}!')
         j += 1
         #await ctx.send(f'{username} has played a total of {totalList[0]} hours in {modeListTwo[0]} and {totalList[1]} hours in {modeListTwo[1]}! \n this is a total of {sum(totalList[0] +totalList[1])} hours!')
-    
+
     #await ctx.send(f'Total = {sum(totalList)}')
     #await ctx.send(f'{totalList[1]}')
+    print(totalList[0])
     await ctx.send(f'{username} has played a total of {totalList[0]} hours in competitive and {totalList[1]} hours in unrated! \nThis is a total of **{round(sum(totalList),2)}** hours!')
         #await ctx.send(f'{WR_List}')
-    app = Flask(__name__)
 
-    @app.route("/home")
-    def home():
-        url = 'https://tracker.gg/valorant/profile/riot/GeTreXxTV%23TTV/agents?playlist=competitive'
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text,'lxml')
-        return f'{username} has played a total of {totalList[0]} hours in competitive and {totalList[1]} hours in unrated! \nThis is a total of **{round(sum(totalList),2)}** hours!'
-    
-    if __name__ == "__main__":
-        app.run()
-        
 @client.command()
 async def valtop3(ctx):
     username = ctx.message.content[9:]
