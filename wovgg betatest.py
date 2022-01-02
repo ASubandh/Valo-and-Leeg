@@ -12,7 +12,7 @@ client = commands.Bot(command_prefix="!")
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Game(f"web scraping | !helpme"))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(f"web scraping | !help"))
     print("Bot is ready")
 
 @client.event
@@ -108,7 +108,7 @@ async def on_message(message):
         #await channel.send(f'Top champions played in Ranked:\n{message_1}\n{message_2}\n{message_3} ')
     await client.process_commands(message)
 
-@client.command()
+@client.command(brief="Cumulative hrs in League")
 async def lolhours(ctx):
     username = ctx.message.content[10:]
     url = 'https://wol.gg/stats/na/' + username + '/'
@@ -121,20 +121,19 @@ async def lolhours(ctx):
 
     await ctx.send(f'{username} has played for {leeghrs} hours!')
 
-#@client.command()
-#async def excuse(ctx):
-    #excuses = ["gotta go eat dinner", "Have to do HW", "need to grind physics", "I got an essay to finish up", "need to use the bathroom first", "im too tired",
-    #"Nah gonna grind Osu","Persona Break","I don't feel like it","i have a dentist appointment","I have to wash the dishes","I’m gonna sleep","Adi is using my computer","my wifi isn’t working"]
-    #await ctx.send(f'{excuses[random.randint(0, 13)]}')
-    #if str(ctx.message.author) == "finalmouse#7422":
-        #await ctx.send("Shut up Bitcherd ehehehehehe")
+@client.command(brief="Convenient Excuse!")
+async def excuse(ctx):
+    excuses = ["gotta go eat dinner", "Have to do HW", "need to grind physics", "I got an essay to finish up", "need to use the bathroom first", "im too tired",
+    "Nah gonna grind Osu","Persona Break","I don't feel like it","i have a dentist appointment","I have to wash the dishes","I’m gonna sleep","Adi is using my computer","my wifi isn’t working"]
+    await ctx.send(f'{excuses[random.randint(0, 13)]}')
 
-@client.command()
+
+@client.command(brief="Veggie Tales.")
 async def veggietales(ctx):
     await ctx.send(f'If you like to talk to tomatoes,\nIf a squash can make you smile,\nIf you like to waltz with potatoes\nUp and down the produce aisle',tts=True)
     await ctx.send(f'Have we got a show for you!\nVeggieTales!\nBroccoli\nCelery\nGotta be\nVeggieTales!',tts = True)
 
-@client.command()
+@client.command(brief="Sussy Gif!!!")
 async def sussy(ctx):
     await ctx.send("https://tenor.com/view/imposter-sussy-sus-kronik-gif-21535924")
 
@@ -144,14 +143,14 @@ async def sussy(ctx):
     #await ctx.send(f"`Leegbot version 1.0 Commands:\n!stats <username>: Dislplays Ranked statistics of a summoner, including their top 3 played champions\n!veggietales: For people who like to talk to tomatoes\n{line_2}`")
 
 
-#@client.command()
+#@client.command(brief="Chard.zip")
 #async def chard(ctx):
     #randompic = str(random.randint(1,14))
-    #await ctx.send(file=File("C:\Python27\Richz\Richz SS" + randompic + ".png"))
-
+    #await ctx.send(file=File(r'C:\Users\Abhishek\AppData\Local\Programs\Python\Python38-32\Richz\Richz SS' + randompic + ".png"))
+    
 
 #Valorant
-@client.command()
+@client.command(brief="Comp + Unrated Playtime")
 async def valhours(ctx):
     j = 0
     k = 0
@@ -162,8 +161,8 @@ async def valhours(ctx):
         username = ctx.message.content[10:]
         if "#" in username:
             newusername = username.replace("#","%23")
-            if " " in username:
-                newusername = username.replace(" ","%20")
+            #if " " in username:
+                #newusername = username.replace(" ","%20")
         #url = 'https://tracker.gg/valorant/profile/riot/' + newusername + '/agents?playlist=competitive'
         url = 'https://tracker.gg/valorant/profile/riot/' + newusername + modeListOne[i]
         response = requests.get(url)
@@ -255,14 +254,14 @@ async def valhours(ctx):
     await ctx.send(f'{username} has played a total of {totalList[0]} hours in competitive and {totalList[1]} hours in unrated! \nThis is a total of **{round(sum(totalList),2)}** hours!')
         #await ctx.send(f'{WR_List}')
 
-@client.command()
+@client.command(brief="Top 3 comp agents by playtime")
 async def valtop3(ctx):
     username = ctx.message.content[9:]
     if "#" in username:
         newusername = username.replace("#","%23")
-        if " " in username:
-           newusername = username.replace(" ","%20")
-    url = 'https://tracker.gg/valorant/profile/riot/' + newusername + '/agents'
+        #if " " in username:
+           #newusername = username.replace(" ","%20")
+    url = 'https://tracker.gg/valorant/profile/riot/' + newusername + '/agents?season=all'
     response = requests.get(url)
     soup = BeautifulSoup(response.text,'lxml')
     agent = soup.find_all('span', class_="agent__name-name" )
